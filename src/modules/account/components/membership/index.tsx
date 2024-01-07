@@ -14,6 +14,7 @@ type OverviewProps = {
     };
     loyaltyPoints: number;
     totalOrders: number;
+    totalBulkPurchase: number;
   };
 };
 
