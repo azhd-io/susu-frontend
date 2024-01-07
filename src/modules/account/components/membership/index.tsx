@@ -12,6 +12,7 @@ type OverviewProps = {
       referral_code?: string;
       referrer?: string;
     };
+    loyaltyPoints: number;
   };
 };
 
