@@ -8,6 +8,7 @@
     "medusa-storefront"
   ],
   "scripts": {
+    "prep": "npm install next react react-dom eslint rimraf -g && yarn add --dev eslint",
     "dev": "next dev -p 8000",
     "build": "next build",
     "start": "next start -p 8000",

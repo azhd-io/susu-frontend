@@ -1,4 +1,4 @@
-import { Customer } from "@medusajs/medusa"
+import { Customer, Order } from "@medusajs/medusa"
 import React, { useEffect, useRef, useState } from 'react';
 import Tree from 'react-d3-tree';
 import { LuMilk } from "react-icons/lu";
@@ -12,15 +12,8 @@ type OverviewProps = {
       referral_code?: string;
       referrer?: string;
     };
-    loyaltyPoints?: number;
   };
 };
-
-type Order = {
-  // Other properties of Order...
-  loyaltyPoints?: number;
-};
-
 
 const getTotalLoyaltyPoints = (orders: Order[] | undefined): number => {
   if (!orders) {
