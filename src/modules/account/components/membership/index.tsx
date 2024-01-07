@@ -1,4 +1,4 @@
-import { Customer, Order } from "@medusajs/medusa"
+import { Customer } from "@medusajs/medusa"
 import React, { useEffect, useRef, useState } from 'react';
 import Tree from 'react-d3-tree';
 import { LuMilk } from "react-icons/lu";
@@ -14,6 +14,12 @@ type OverviewProps = {
     };
   };
 };
+
+type Order = {
+  // Other properties of Order...
+  loyaltyPoints?: number;
+};
+
 
 const getTotalLoyaltyPoints = (orders: Order[] | undefined): number => {
   if (!orders) {
