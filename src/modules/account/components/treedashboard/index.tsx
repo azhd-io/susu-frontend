@@ -11,6 +11,9 @@ type OverviewProps = {
       referral_code?: string;
       referrer?: string;
     };
+    loyaltyPoints: number;
+    totalOrders: number;
+    totalBulkPurchase: number;
   };
 };
 
@@ -21,7 +24,7 @@ const getTotalLoyaltyPoints = (orders: Order[] | undefined): number => {
 
   return orders.reduce((total, order) => {
     // Assuming each order has a 'loyaltyPoints' attribute
-    return total + (order.loyaltyPoints || 0);
+    return total + (order as any).loyaltyPoints || 0;
   }, 0);
 };
 
