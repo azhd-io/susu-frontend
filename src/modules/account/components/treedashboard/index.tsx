@@ -344,7 +344,7 @@ const TreeDashboard = ({ orders, customer }: OverviewProps) => {
 
 {activeLeaderboard === 'profit' && (
 <div className="mt-5 px-10">
-  <h2 className="text-xl font-semibold text-gray-800 mb-4">Top 10 Profit Sharing</h2>
+  <h2 className="text-xl font-semibold text-gray-800 mb-4">Top 10 Shares</h2>
   <div className="bg-white shadow rounded-lg overflow-hidden responsive-table" style={{ maxHeight: '700px', overflowY: 'auto' }}>
     <table className="min-w-full">
       <thead className="bg-sky-400">
@@ -356,7 +356,7 @@ const TreeDashboard = ({ orders, customer }: OverviewProps) => {
             User Name
           </th>
           <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-          #Bulk Purchases
+          #Total Shares
           </th>
           <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
           State
@@ -378,7 +378,7 @@ const TreeDashboard = ({ orders, customer }: OverviewProps) => {
           
            </td>
            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" data-label="State">
-            TEST
+           {profit.billing_address ? profit.billing_address.province : 'Unknown'}
             {index === 0 ? <FaCrown className="inline-block ml-2 text-[#fbbf24]" /> : 
             index === 1 ? <FaCrown className="inline-block ml-2 text-[silve]" /> : 
             index === 2 ? <FaCrown className="inline-block ml-2 text-[#78350f]" /> : null} 

@@ -183,7 +183,6 @@ const ProfileAddress: React.FC<MyInformationProps> = ({ customer }) => {
       onSubmit={handleSubmit(updateAddresses )}
       className="w-full"
     >
-       <span className="address-section-title">Other Addresses</span>
       <AccountInfo
         label="Other Addresses"
         currentInfo={   
