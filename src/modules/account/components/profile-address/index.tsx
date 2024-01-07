@@ -30,7 +30,15 @@ type UpdateCustomerAddressFormData = {
 
 
 const ProfileAddress: React.FC<MyInformationProps> = ({ customer }) => {
-
+  const homeAddress = customer.metadata?.home_address as Address | undefined;
+  const officeAddress = customer.metadata?.office_address as Address | undefined;
+  const getDefaultAddress = (address: unknown): Address => {
+    if (typeof address === 'object' && address !== null) {
+      // Perform further checks if needed and return the address
+      return address as Address;
+    }
+    return createEmptyAddress();
+  };
   
   const {
     register,
@@ -40,8 +48,8 @@ const ProfileAddress: React.FC<MyInformationProps> = ({ customer }) => {
     formState: { errors },
   } = useForm<UpdateCustomerAddressFormData>({
     defaultValues: {
-      home_address: customer.metadata?.home_address || createEmptyAddress(),
-      office_address: customer.metadata?.office_address || createEmptyAddress(), // createEmptyAddress is a function you'll define
+      home_address: getDefaultAddress(customer.metadata?.home_address),
+      office_address: getDefaultAddress(customer.metadata?.office_address),
     },
   })
 
@@ -71,14 +79,14 @@ const ProfileAddress: React.FC<MyInformationProps> = ({ customer }) => {
 
   useEffect(() => {
     reset({
-      home_address: customer.metadata?.home_address || createEmptyAddress(),
-      office_address: customer.metadata?.office_address || createEmptyAddress(),
+      home_address: (customer.metadata?.home_address as Address) || createEmptyAddress(),
+      office_address: (customer.metadata?.office_address as Address) || createEmptyAddress(),
     })
   }, [customer, reset])
 
   const { refetchCustomer } = useAccount()
 
-
+  
 
   const updateAddresses = (data: UpdateCustomerAddressFormData) => {
     // Update the customer with both billing and home addresses
@@ -101,15 +109,17 @@ const ProfileAddress: React.FC<MyInformationProps> = ({ customer }) => {
 
 
   const homeAddressInfo = useMemo(() => {
-    const homeAddress = customer.metadata?.home_address;
+    const homeAddress = customer.metadata?.home_address as Address | undefined;
     if (!homeAddress) {
       return "No home address"; // Display this when no home address is set
     }
 
     const homecountry =
-    regionOptions?.find(
-      (country) => country.value === homeAddress.country_code
-    )?.label || homeAddress.country_code?.toUpperCase()
+    homeAddress?.country_code
+    ? regionOptions?.find(
+        (country) => country.value === homeAddress.country_code
+      )?.label || homeAddress.country_code.toUpperCase()
+    : "Unknown Country";
 
   
     return (
@@ -140,15 +150,17 @@ const ProfileAddress: React.FC<MyInformationProps> = ({ customer }) => {
 
 
   const officeAddressInfo = useMemo(() => {
-    const officeAddress = customer.metadata?.office_address;
+    const officeAddress = customer.metadata?.office_address as Address | undefined;
     if (!officeAddress) {
       return "No Office Address"; // Display this when no home address is set
     }
 
     const officeCountry =
-    regionOptions?.find(
-      (country) => country.value === officeAddress.country_code
-    )?.label || officeAddress.country_code?.toUpperCase()
+    officeAddress?.country_code
+    ? regionOptions?.find(
+        (country) => country.value === officeAddress.country_code
+      )?.label || officeAddress.country_code.toUpperCase()
+    : "Unknown Country";
 
   
     return (
@@ -209,57 +221,57 @@ const ProfileAddress: React.FC<MyInformationProps> = ({ customer }) => {
               {...register("home_address.first_name", {
                 required: true,
               })}
-              defaultValue={customer.metadata?.home_address?.firstName}
+              defaultValue={homeAddress?.first_name}
               errors={errors}
             />
             <Input
               label="Last name"
               {...register("home_address.last_name", { required: true })}
-              defaultValue={customer.metadata?.home_address?.lastName}
+              defaultValue={homeAddress?.last_name}
               errors={errors}
             />
           </div>
           <Input
             label="Company"
             {...register("home_address.company")}
-            defaultValue={customer.metadata?.home_address?.company}
+            defaultValue={homeAddress?.company}
             errors={errors}
           />
           <Input
             label="Address"
             {...register("home_address.address_1", { required: true })}
-            defaultValue={customer.metadata?.home_address?.address1}
+            defaultValue={homeAddress?.address_1} 
             errors={errors}
           />
           <Input
             label="Apartment, suite, etc."
             {...register("home_address.address_2")}
-            defaultValue={customer.metadata?.home_address?.address2}
+            defaultValue={homeAddress?.address_2} 
             errors={errors}
           />
           <div className="grid grid-cols-[144px_1fr] gap-x-2">
             <Input
               label="Postal code"
               {...register("home_address.postal_code", { required: true })}
-              defaultValue={customer.metadata?.home_address?.postalCode}
+              defaultValue={homeAddress?.postal_code} 
               errors={errors}
             />
             <Input
               label="City"
               {...register("home_address.city", { required: true })}
-              defaultValue={customer.metadata?.home_address?.city}
+              defaultValue={homeAddress?.city} 
               errors={errors}
             />
           </div>
           <Input
             label="Province"
             {...register("home_address.province")}
-            defaultValue={customer.metadata?.home_address?.province}
+            defaultValue={homeAddress?.province} 
             errors={errors}
           />
           <NativeSelect
             {...register("home_address.country_code", { required: true })}
-            defaultValue={customer.metadata?.home_address?.countryCode}
+            defaultValue={homeAddress?.country_code} 
           >
             <option value="">-</option>
             {regionOptions.map((option, i) => {
@@ -280,57 +292,57 @@ const ProfileAddress: React.FC<MyInformationProps> = ({ customer }) => {
               {...register("office_address.first_name", {
                 required: true,
               })}
-              defaultValue={customer.metadata?.office_address?.firstName}
+              defaultValue={officeAddress?.first_name}
               errors={errors}
             />
             <Input
               label="Last name"
               {...register("office_address.last_name", { required: true })}
-              defaultValue={customer.metadata?.office_address?.lastName}
+              defaultValue={officeAddress?.last_name}
               errors={errors}
             />
           </div>
           <Input
             label="Company"
             {...register("office_address.company")}
-            defaultValue={customer.metadata?.office_address?.company}
+            defaultValue={officeAddress?.company}
             errors={errors}
           />
           <Input
             label="Address"
             {...register("office_address.address_1", { required: true })}
-            defaultValue={customer.metadata?.office_address?.address1}
+            defaultValue={officeAddress?.address_1}
             errors={errors}
           />
           <Input
             label="Apartment, suite, etc."
             {...register("office_address.address_2")}
-            defaultValue={customer.metadata?.office_address?.address2}
+            defaultValue={officeAddress?.address_2}
             errors={errors}
           />
           <div className="grid grid-cols-[144px_1fr] gap-x-2">
             <Input
               label="Postal code"
               {...register("office_address.postal_code", { required: true })}
-              defaultValue={customer.metadata?.office_address?.postalCode}
+              defaultValue={officeAddress?.postal_code}
               errors={errors}
             />
             <Input
               label="City"
               {...register("office_address.city", { required: true })}
-              defaultValue={customer.metadata?.office_address?.city}
+              defaultValue={officeAddress?.city}
               errors={errors}
             />
           </div>
           <Input
             label="Province"
             {...register("office_address.province")}
-            defaultValue={customer.metadata?.office_address?.province}
+            defaultValue={officeAddress?.province}
             errors={errors}
           />
           <NativeSelect
             {...register("office_address.country_code", { required: true })}
-            defaultValue={customer.metadata?.office_address?.countryCode}
+            defaultValue={officeAddress?.country_code}
           >
             <option value="">-</option>
             {regionOptions.map((option, i) => {

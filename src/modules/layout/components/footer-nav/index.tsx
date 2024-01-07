@@ -101,7 +101,7 @@ const FooterNav = () => {
                                 className="w-full text-gray-800 p-4 h-10 rounded-full focus:outline-none 
                             focus:border border-sky-800" />
                             <button
-                                type="Submit"
+                                type="submit"
                                 className="bg-sky-700 px-8 py-2 rounded-full text-white
                                  absolute top-0 right-0"
                                 >

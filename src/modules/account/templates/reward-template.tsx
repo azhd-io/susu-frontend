@@ -20,7 +20,7 @@ type Rewards = {
   id: string;
   created_at: string;
   updated_at: string;
-  price: string;
+  price: number;
   image: string;
   details: string;
   caption: string;
@@ -40,7 +40,7 @@ function getStatusColor(status: string) {
 }
 
 const RewardTemplate: React.FC = () => {
-  const [rewards, setRewards] = useState([]); // Initialize state for rewards
+  const [rewards, setRewards] = useState<Rewards[]>([]);  // Initialize state for rewards
   const { customer } = useMeCustomer()
   const [notification, setNotification] = useState({ message: '', type: '' });
   const [showHistoryModal, setShowHistoryModal] = useState(false);
@@ -66,8 +66,8 @@ const RewardTemplate: React.FC = () => {
     // Call the function to fetch rewards
   }, []); // Empty dependency array to run only on component mount
 
-  const handleRedeem = async (rewardId, total) => {
-    if (customer.loyaltyPoints < total) {
+  const handleRedeem = async (rewardId: string, total: number) => {
+    if (!customer || customer.loyaltyPoints < total) {
       setNotification({ message: 'You dont have enough to redeem this reward.', type: 'error' });
 
       return;

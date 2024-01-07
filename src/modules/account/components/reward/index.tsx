@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 
 interface Reward {
-  id: number;
+  id: string;
   image: string;
   caption: string;
   details: string;
@@ -26,7 +26,7 @@ const RewardCard: React.FC<RewardCardProps> = ({ reward, onRedeem }) => {
 
       <h2 className="text-lg font-semibold mb-2 font-sans">{reward.caption}</h2>
       <p className="text-gray-700 mb-2 font-sans">{reward.details}</p>
-      <p className="text-gray-600 font-sans">Required Points: {reward.price/100}</p>
+      <p className="text-gray-600 font-sans">Required Points: {typeof reward.price === 'string' ? parseFloat(reward.price) / 100 : 'N/A'}</p>
 
       <button onClick={onRedeem} className="bg-sky-400 text-white px-4 py-2 rounded-md mt-2">
         Redeem

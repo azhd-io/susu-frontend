@@ -32,13 +32,20 @@ const getTotalLoyaltyPoints = (orders: Order[] | undefined): number => {
 
 const Overview = ({ orders, customer }: OverviewProps) => {
   const totalLoyaltyPoints = getTotalLoyaltyPoints(orders);
-  const copyToClipboard = (referralCode: string) => {
+  const copyToClipboard = (referralCode?: string) => {
+    if (!referralCode) {
+      // Handle the undefined case - maybe show an error or do nothing
+      console.error('No referral code to copy');
+      return;
+    }
+  
     navigator.clipboard.writeText(referralCode).then(() => {
       alert("Referral code copied to clipboard!");
     }).catch(err => {
       console.error('Could not copy text: ', err);
     });
   };
+  
   return (
     <div>
     

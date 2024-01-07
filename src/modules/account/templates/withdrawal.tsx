@@ -20,6 +20,16 @@ function getStatusColor(status: string) {
   }
 }
 
+interface Withdrawal {
+  id: string;
+  created_at: string;
+  total: string;
+  status: string;
+  reason: string;
+  customer_id: string;
+}
+
+
 
 const WithdrawalsPage: React.FC = () => {
   const [pendingWithdrawals, setPendingWithdrawals] = useState<Withdrawal[]>([]);
@@ -57,12 +67,19 @@ const WithdrawalsPage: React.FC = () => {
     // Logic to handle form submission and update state
   };
 
-  const handleRemovePendingWithdrawal = (index: number) => {
+  //const handleRemovePendingWithdrawal = (index: number) => {
     // Logic to remove pending withdrawal and update state
-    setPendingWithdrawals((pendingWithdrawals) => [
-      ...pendingWithdrawals.slice(0, index),
-      ...pendingWithdrawals.slice(index + 1),
-    ]);
+    
+    //setPendingWithdrawals((pendingWithdrawals) => [
+      //...pendingWithdrawals.slice(0, index),
+     // ...pendingWithdrawals.slice(index + 1),
+   // ]);
+ // };
+
+  const handleRemovePendingWithdrawal = (withdrawalToRemove: Withdrawal) => {
+    setPendingWithdrawals(pendingWithdrawals =>
+      pendingWithdrawals.filter(withdrawal => withdrawal.id !== withdrawalToRemove.id)
+    );
   };
 
   //const handleViewDetails = (index: number, isPast: boolean) => {
@@ -104,8 +121,7 @@ const WithdrawalsPage: React.FC = () => {
             <h2 className="text-2xl font-bold">Pending Withdrawals</h2>
             <WithdrawalList
               customer={customer}
-              withdrawals={pendingWithdrawals}
-              onRemove={handleRemovePendingWithdrawal}
+              onRemove={handleRemovePendingWithdrawal} // Make sure this matches the expected function signature
               onViewDetails={(withdrawal) => handleViewDetails(withdrawal)}
             />
           </div>
@@ -113,7 +129,8 @@ const WithdrawalsPage: React.FC = () => {
        
         <div className="mb-8">
             <h2 className="text-2xl font-bold mb-2">Past Withdrawals</h2>
-            <WithdrawalTable customer={customer} onViewDetails={(index) => handleViewDetails(index, true)} />
+            <WithdrawalTable   customer={customer}
+            onViewDetails={(withdrawal) => handleViewDetails(withdrawal)}  />
           </div>
           </div>
         </div>
@@ -127,7 +144,7 @@ const WithdrawalsPage: React.FC = () => {
           <div className="modal">
             <h2 className="text-2xl font-bold mb-2">Withdrawal Details</h2>
             <p>Date: {new Date(selectedWithdrawal.created_at).toLocaleDateString()}</p>
-            <p>Total Amount: RM {selectedWithdrawal.total/100}</p>
+            <p>Total Amount: RM {typeof selectedWithdrawal.total === 'string' ? parseFloat(selectedWithdrawal.total) / 100 : 'N/A'}</p>
             <p >Status: <span style={{ color: getStatusColor(selectedWithdrawal.status) }}>{selectedWithdrawal.status}</span> </p>
             <div className="flex justify-center">
             <button onClick={handleCloseDetails} className="fifth-heading w-auto m-2 bg-sky-400 bg-opacity-4 py-2 px-4 rounded-full">

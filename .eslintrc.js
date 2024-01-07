@@ -8,6 +8,7 @@ module.exports = {
     "@next/next/no-img-element": "off",
 
     // Add other rules you want to disable here
+    "@next/next/no-sync-scripts": "off",
   },
   
 };

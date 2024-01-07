@@ -281,8 +281,10 @@ const Membership: React.FC<OverviewProps> = ({ customer }) => {
                       pathFunc="step" 
                       orientation="vertical" 
                       renderCustomNodeElement={(rd) => (
+                        //@ts-ignore
                         <RectSvgNode 
                           {...rd} 
+      
                           onIconClick={handleIconClick} 
                         
                         />

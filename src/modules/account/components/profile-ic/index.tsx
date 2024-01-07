@@ -71,6 +71,14 @@ const ProfileIC: React.FC<MyInformationProps> = ({ customer }) => {
     )
   }
 
+  const renderMetadataIC = () => {
+    const icValue = customer.metadata?.IC;
+    if (typeof icValue === 'string' || typeof icValue === 'number') {
+      return <div className="font-semibold">{icValue}</div>;
+    }
+    return <div className="font-semibold">Not Available</div>; // Default case
+  }
+
   return (
     <form onSubmit={handleSubmit(updateIC)} className="w-full">
       <AccountInfo
@@ -79,7 +87,7 @@ const ProfileIC: React.FC<MyInformationProps> = ({ customer }) => {
         currentInfo={ 
           <>
           <div style={{ textAlign: 'left' }}> 
-           <div className="font-semibold">{customer.metadata?.IC}</div>
+          {renderMetadataIC()}
           </div>
           </>
         }
