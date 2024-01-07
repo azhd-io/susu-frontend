@@ -13,6 +13,7 @@ type OverviewProps = {
       referrer?: string;
     };
     loyaltyPoints: number;
+    totalOrders: number;
   };
 };
 
